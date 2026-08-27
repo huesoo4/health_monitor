@@ -9,7 +9,6 @@ Una herramienta de monitoreo del sistema que proporciona información en tiempo 
 - **Monitoreo de Disco**: Uso del filesystem raíz y espacio disponible
 - **Estado de Servicios**: Verifica si servicios críticos están corriendo
 - **Evaluación de Estado**: Clasifica recursos como OK, WARNING o DANGER
-- **Dockerizado**: Ejecutable en contenedores con acceso al host
 
 ## 🚀 Inicio Rápido
 
@@ -17,7 +16,6 @@ Una herramienta de monitoreo del sistema que proporciona información en tiempo 
 
 - Python 3.7+
 - pip
-- (Opcional) Docker y Docker Compose
 
 ### Instalación Local
 
@@ -30,19 +28,6 @@ pip install -r requirements.txt
 
 # Ejecutar la aplicación
 python main.py
-```
-
-### Ejecutar con Docker
-
-```bash
-# Construir e iniciar el contenedor
-docker-compose up --build
-
-# O ejecutar en background
-docker-compose up -d
-
-# Ver logs
-docker-compose logs -f health-monitor
 ```
 
 ## 📊 Salida de la Aplicación
@@ -120,37 +105,6 @@ Edita `services.json` para agregar o quitar servicios:
 | DANGER | 85-100% | Recurso crítico, intervención necesaria |
 | ERROR | < 0 o > 100 | Error en la lectura de datos |
 
-## 🐳 Información Docker
-
-### Imagen y Volúmenes
-
-La configuración Docker monta los siguientes volúmenes para acceso al sistema host:
-
-- `/sys` - Información del kernel (lectura)
-- `/proc` - Información de procesos (lectura)
-- `/dev` - Dispositivos del sistema (lectura)
-
-Esto permite a `psutil` acceder correctamente a la información del sistema desde dentro del contenedor.
-
-### Comandos Útiles
-
-```bash
-# Construir imagen personalizada
-docker build -t mi-health-monitor .
-
-# Ejecutar contenedor directamente
-docker run --rm --privileged \
-  -v /sys:/sys:ro \
-  -v /proc:/proc:ro \
-  -v /dev:/dev:ro \
-  mi-health-monitor
-
-# Detener todos los contenedores
-docker-compose down
-
-# Ver estado de contenedores
-docker-compose ps
-```
 
 ## 🔧 Dependencias
 
@@ -170,31 +124,6 @@ Para ejecutar el monitoreo cada cierto tiempo, puedes usar:
 # Cada hora
 0 * * * * cd /path/to/health_monitor && python main.py >> health.log 2>&1
 ```
-
-**Con Docker:**
-```bash
-# Ejecutar y actualizar cada 60 segundos
-while true; do
-  docker-compose up --abort-on-container-exit
-  sleep 60
-done
-```
-
-## 🐛 Troubleshooting
-
-### El contenedor no lee datos correctamente
-
-```bash
-# Verificar que los volúmenes están montados
-docker inspect <container_id> | grep Mounts
-
-# Ejecutar con permisos privilegiados
-docker-compose up --build
-```
-
-### Errores de permisos con servicios
-
-En contenedores, algunos servicios pueden no ser detectables. Considera ejecutar en el host directamente o con `privileged: true`.
 
 ### El script falla localmente
 
