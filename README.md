@@ -67,8 +67,6 @@ health_monitor/
 ├── main.py              # Punto de entrada principal
 ├── requirements.txt     # Dependencias Python
 ├── services.json        # Configuración de servicios a monitorear
-├── Dockerfile           # Configuración Docker
-├── docker-compose.yml   # Orquestación de contenedores
 ├── README.md            # Este archivo
 └── monitor/
     ├── cpu.py          # Monitoreo de CPU
