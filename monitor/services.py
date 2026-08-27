@@ -1,8 +1,15 @@
 import subprocess
 import json
+from pathlib import Path
+
 
 def processes():
-    with open ("/home/hueso/Documentos/health_monitor/services.json") as file:
+
+    parent_folder = Path(__file__).resolve().parent.parent
+
+    file_folder = parent_folder / "services.json"
+    
+    with open (file_folder) as file:
         f = json.load(file)
         services = {}
         for value in f.values():
