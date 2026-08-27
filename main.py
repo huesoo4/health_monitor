@@ -1,10 +1,12 @@
 from monitor.hostname import get_hostname
-from monitor.cpu import *
-from monitor.ram import *
-from monitor.disk import *
-from monitor.services import *
+from monitor.cpu import get_cpu
+from monitor.ram import usage_ram, available_ram
+from monitor.disk import usage_disk, available_disk
+from monitor.services import processes
+from monitor.status import check_status
 
-
+total_cpu, available_cpu = usage_ram()
+total_disk, free_disk = usage_disk()
 print(f"""
 ================================
        SYSTEM HEALTH
@@ -17,20 +19,20 @@ Usage: {get_cpu()} %
 Status: {check_status(get_cpu())}
 
 MEMORY
-Usage: {usage_ram()} %
-Available: {available_ram()} GB
-Status: {check_status(usage_ram())}
+Usage: {total_cpu} %
+Available: {available_ram(available_cpu)} GB
+Status: {check_status(total_cpu)}
 
 DISK /
-Usage: {usage_disk()} %
-Available: {available_disk()} GB
-Status: {check_status(usage_disk())}
+Usage: {total_disk} %
+Available: {available_disk(free_disk)} GB
+Status: {check_status(total_disk)}
 
 SERVICES
 """)
 
 output = processes()
 
-for i in output:
-    for key, value in i.items():
-        print(f"{key}\t{value.decode('utf-8')}")
+
+for key, value in output.items():
+    print(f"{key}\t{value}")
