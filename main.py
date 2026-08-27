@@ -5,10 +5,11 @@ from monitor.disk import usage_disk, available_disk
 from monitor.services import processes
 from monitor.status import check_status
 
-usage_cpu = get_cpu()
-total_ram, free_ram = usage_ram()
-total_disk, free_disk = usage_disk()
-print(f"""
+def main():
+    usage_cpu = get_cpu()
+    total_ram, free_ram = usage_ram()
+    total_disk, free_disk = usage_disk()
+    print(f"""
 ================================
        SYSTEM HEALTH
 ================================
@@ -32,8 +33,11 @@ Status: {check_status(total_disk)}
 SERVICES
 """)
 
-output = processes()
+    output = processes()
 
 
-for key, value in output.items():
-    print(f"{key}\t{value}")
+    for key, value in output.items():
+        print(f"{key}\t{value}")
+
+if __name__ == "__main__":
+    main()
