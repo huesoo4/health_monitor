@@ -5,7 +5,8 @@ from monitor.disk import usage_disk, available_disk
 from monitor.services import processes
 from monitor.status import check_status
 
-total_cpu, available_cpu = usage_ram()
+usage_cpu = get_cpu()
+total_ram, free_ram = usage_ram()
 total_disk, free_disk = usage_disk()
 print(f"""
 ================================
@@ -15,13 +16,13 @@ print(f"""
 Hostname: {get_hostname()}
 
 CPU
-Usage: {get_cpu()} %
-Status: {check_status(get_cpu())}
+Usage: {usage_cpu} %
+Status: {check_status(usage_cpu)}
 
 MEMORY
-Usage: {total_cpu} %
-Available: {available_ram(available_cpu)} GB
-Status: {check_status(total_cpu)}
+Usage: {total_ram} %
+Available: {available_ram(free_ram)} GB
+Status: {check_status(total_ram)}
 
 DISK /
 Usage: {total_disk} %
